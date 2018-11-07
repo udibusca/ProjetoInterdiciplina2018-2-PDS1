@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -13,6 +14,7 @@ import com.projeto.ubercom.domain.Categoria;
 import com.projeto.ubercom.domain.Produto;
 import com.projeto.ubercom.repositores.CategoriaRepository;
 import com.projeto.ubercom.repositores.ProdutoRepository;
+import com.projeto.ubercom.services.exceptions.DataIntegrityException;
 import com.projeto.ubercom.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -34,6 +36,19 @@ public class ProdutoService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Produto.class.getName()));
 	}
 
+	/**
+	 * @param id
+	 */
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir o produto");
+		}
+	}
+	
 	/**
 	 * @param nome
 	 * @param ids

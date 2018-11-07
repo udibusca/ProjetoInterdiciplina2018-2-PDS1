@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projeto.ubercom.domain.Categoria;
 import com.projeto.ubercom.domain.Produto;
 import com.projeto.ubercom.dto.ProdutoDTO;
 import com.projeto.ubercom.resources.utils.URL;
@@ -21,6 +23,29 @@ public class ProdutoResource {
 
 	@Autowired
 	private ProdutoService service;
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/{id}",method=RequestMethod.GET)
+	public ResponseEntity<Produto> find(@PathVariable Integer id) {
+		Produto obj = service.find(id);
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	
 	
 	/**
 	 * @param nome
