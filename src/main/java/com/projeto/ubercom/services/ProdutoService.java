@@ -3,6 +3,7 @@ package com.projeto.ubercom.services;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.projeto.ubercom.domain.Categoria;
 import com.projeto.ubercom.domain.Produto;
+import com.projeto.ubercom.dto.ProdutoDTO;
 import com.projeto.ubercom.repositores.CategoriaRepository;
 import com.projeto.ubercom.repositores.ProdutoRepository;
 import com.projeto.ubercom.services.exceptions.DataIntegrityException;
@@ -63,5 +65,22 @@ public class ProdutoService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Categoria> categorias = categoriaRepository.findAllById(ids);
 		return repo.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
+	}
+
+	/**
+	 * @param objDto
+	 * @return
+	 */
+	public Produto fromDto(ProdutoDTO objDto) {
+		return new Produto(objDto.getId(),objDto.getNome(),objDto.getPreco());
+	}
+	
+	/**
+	 * @param obj
+	 * @return
+	 */
+	public Produto insert(Produto obj) {
+		obj.setId(null);
+		return repo.save(obj);
 	}
 }
