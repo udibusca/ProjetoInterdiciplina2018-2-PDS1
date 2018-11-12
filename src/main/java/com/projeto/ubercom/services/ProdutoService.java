@@ -83,4 +83,11 @@ public class ProdutoService {
 		obj.setId(null);
 		return repo.save(obj);
 	}
+	
+	/**
+	 * @return
+	 */
+	public List<Produto> findAll() {
+		return repo.findAll();
+	}
 }

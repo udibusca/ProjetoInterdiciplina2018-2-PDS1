@@ -2,6 +2,7 @@ package com.projeto.ubercom.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -62,7 +63,17 @@ public class ProdutoResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	/**
+	 * @return
+	 */
 	
+	//@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/listaProdutos", method=RequestMethod.GET)
+	public ResponseEntity<List<ProdutoDTO>> findAll() {
+		List<Produto> list = service.findAll();
+		List<ProdutoDTO> listDto = list.stream().map(obj -> new ProdutoDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
+	}
 	
 	/**
 	 * @param nome
