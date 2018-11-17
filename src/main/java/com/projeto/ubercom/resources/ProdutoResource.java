@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.projeto.ubercom.domain.Categoria;
 import com.projeto.ubercom.domain.Produto;
 import com.projeto.ubercom.dto.ProdutoDTO;
 import com.projeto.ubercom.resources.utils.URL;
@@ -35,7 +36,9 @@ public class ProdutoResource {
 	 */
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<Produto> find(@PathVariable Integer id) {
+		List<Categoria> cat = service.categoriaByProduto(id);
 		Produto obj = service.find(id);
+		obj.setCategorias(cat);
 		return ResponseEntity.ok().body(obj);
 	}
 	
@@ -67,12 +70,24 @@ public class ProdutoResource {
 	 * @return
 	 */
 	
-	//@RequestMapping(method=RequestMethod.GET)
 	@RequestMapping(value="/listaProdutos", method=RequestMethod.GET)
 	public ResponseEntity<List<ProdutoDTO>> findAll() {
 		List<Produto> list = service.findAll();
 		List<ProdutoDTO> listDto = list.stream().map(obj -> new ProdutoDTO(obj)).collect(Collectors.toList());  
 		return ResponseEntity.ok().body(listDto);
+	}
+	
+	/**
+	 * @param objDto
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto, @PathVariable Integer id) {
+		Produto obj = service.fromDto(objDto);
+		obj.setId(id);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 	
 	/**

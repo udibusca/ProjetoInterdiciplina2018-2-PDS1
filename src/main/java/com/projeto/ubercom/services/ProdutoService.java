@@ -3,7 +3,6 @@ package com.projeto.ubercom.services;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -67,6 +66,10 @@ public class ProdutoService {
 		return repo.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
 	}
 
+	
+	public List<Categoria> categoriaByProduto(Integer id){
+		return repo.findCategoriasPorProduto(id);
+	}
 	/**
 	 * @param objDto
 	 * @return
@@ -90,4 +93,23 @@ public class ProdutoService {
 	public List<Produto> findAll() {
 		return repo.findAll();
 	}
+	
+	/**
+	 * @param obj
+	 * @return
+	 */
+	public Produto update(Produto obj) {
+		Produto newObj = find(obj.getId());
+ 		updateData(newObj, obj);
+ 		return repo.save(newObj);
+	}
+	
+	/**
+	 * @param newObj
+	 * @param obj
+	 */
+	private void updateData(Produto newObj, Produto obj) {
+ 		newObj.setNome(obj.getNome());
+ 		newObj.setPreco(obj.getPreco());
+ 	}
 }
