@@ -111,5 +111,6 @@ public class ProdutoService {
 	private void updateData(Produto newObj, Produto obj) {
  		newObj.setNome(obj.getNome());
  		newObj.setPreco(obj.getPreco());
+ 		newObj.setCategorias(obj.getCategorias());
  	}
 }
