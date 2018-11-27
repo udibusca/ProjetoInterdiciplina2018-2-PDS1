@@ -67,6 +67,10 @@ public class ProdutoService {
 	}
 
 	
+	/**
+	 * @param id
+	 * @return
+	 */
 	public List<Categoria> categoriaByProduto(Integer id){
 		return repo.findCategoriasPorProduto(id);
 	}

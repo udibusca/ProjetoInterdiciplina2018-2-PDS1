@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.projeto.ubercom.domain.Categoria;
+import com.projeto.ubercom.domain.Produto;
 import com.projeto.ubercom.dto.CategoriaDTO;
 import com.projeto.ubercom.repositores.CategoriaRepository;
 import com.projeto.ubercom.services.exceptions.DataIntegrityException;
@@ -55,12 +56,12 @@ public class CategoriaService {
 	 * @param id
 	 */
 	public void delete(Integer id) {
-		find(id);
-		try {
+		List<Produto> prod = produtoByCategoria(id);
+		if (prod != null) {
+			throw new DataIntegrityException(
+					"Não é possível excluir a categoria pois associada a algum produto.");
+		} else {
 			repo.deleteById(id);
-		}
-		catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
 		}
 	}
 	
@@ -98,5 +99,13 @@ public class CategoriaService {
 	private void updateData(Categoria newObj, Categoria obj) {
  		newObj.setNome(obj.getNome());
  	}
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	public List<Produto> produtoByCategoria(Integer id){
+		return repo.findProdutosPorCategorias(id);
+	}
 
 }
