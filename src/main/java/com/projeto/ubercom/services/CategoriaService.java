@@ -57,9 +57,9 @@ public class CategoriaService {
 	 */
 	public void delete(Integer id) {
 		List<Produto> prod = produtoByCategoria(id);
-		if (prod != null) {
+		if (!prod.isEmpty()) {
 			throw new DataIntegrityException(
-					"Não é possível excluir a categoria pois associada a algum produto.");
+					"Não é possível excluir a categoria pois está associada a algum produto!");
 		} else {
 			repo.deleteById(id);
 		}
