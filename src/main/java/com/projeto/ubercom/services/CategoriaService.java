@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -48,8 +47,8 @@ public class CategoriaService {
 	 */
 	public Categoria update(Categoria obj) {
 		Categoria newObj = find(obj.getId());
- 		updateData(newObj, obj);
- 		return repo.save(newObj);
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 
 	/**
@@ -58,20 +57,19 @@ public class CategoriaService {
 	public void delete(Integer id) {
 		List<Produto> prod = produtoByCategoria(id);
 		if (!prod.isEmpty()) {
-			throw new DataIntegrityException(
-					"Não é possível excluir a categoria pois está associada a algum produto!");
+			throw new DataIntegrityException("Não é possível excluir a categoria pois está associada a algum produto!");
 		} else {
 			repo.deleteById(id);
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public List<Categoria> findAll() {
 		return repo.findAll();
 	}
-	
+
 	/**
 	 * @param page
 	 * @param linesPerPage
@@ -83,28 +81,28 @@ public class CategoriaService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
-	
+
 	/**
 	 * @param objDto
 	 * @return
 	 */
 	public Categoria fromDto(CategoriaDTO objDto) {
-		return new Categoria(objDto.getId(),objDto.getNome());
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
-	
+
 	/**
 	 * @param newObj
 	 * @param obj
 	 */
 	private void updateData(Categoria newObj, Categoria obj) {
- 		newObj.setNome(obj.getNome());
- 	}
-	
+		newObj.setNome(obj.getNome());
+	}
+
 	/**
 	 * @param id
 	 * @return
 	 */
-	public List<Produto> produtoByCategoria(Integer id){
+	public List<Produto> produtoByCategoria(Integer id) {
 		return repo.findProdutosPorCategorias(id);
 	}
 

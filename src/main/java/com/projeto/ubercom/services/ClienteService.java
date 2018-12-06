@@ -135,4 +135,19 @@ public class ClienteService {
 		newObj.setEmail(obj.getEmail());
 	}
 
+	/**
+	 * @param email
+	 * @return
+	 */
+	public Cliente BuscaClientePorNomeCpfOuCnpj(String email) {
+		Cliente cli = repo.findByEmail(email);
+		if (cli != null) {
+			return cli;
+		} else {
+			throw new ObjectNotFoundException(
+					"Endereço de e-mail : " + email + " não encontrado! , Tipo: " + Cliente.class.getName());
+		}
+
+	}
+
 }

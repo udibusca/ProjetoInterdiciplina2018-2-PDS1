@@ -43,6 +43,12 @@ public class ClienteResources {
 		return ResponseEntity.ok().body(obj);
 	}
 
+	@RequestMapping(value = "/{email}/{cpfOuCnpj}", method = RequestMethod.GET)
+	public ResponseEntity<Cliente> findClientePorNomeCpfOuCnpj(@PathVariable String email,@PathVariable String cpfOuCnpj) {
+		Cliente obj = service.BuscaClientePorNomeCpfOuCnpj(email);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	/**
 	 * @param objDto
 	 * @return
